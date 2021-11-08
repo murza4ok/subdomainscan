@@ -1,0 +1,17 @@
+https://smtp.github.com
+https://pop.github.com
+https://ns1.github.com
+https://webdisk.github.com
+https://ns2.github.com
+https://cpanel.github.com
+https://whm.github.com
+https://autodiscover.github.com
+https://autoconfig.github.com
+https://imap.github.com
+https://test.github.com
+https://ns.github.com
+https://pop3.github.com
+https://dev.github.com
+https://www2.github.com
+https://admin.github.com
+https://forum.github.com

@@ -1,4 +1,7 @@
-http://www.github.com
-http://mail.github.com
-http://ftp.github.com
-http://localhost.github.com
+https://www.github.com
+https://mail.github.com
+https://ftp.github.com
+https://localhost.github.com
+https://webmail.github.com
+https://m.github.com
+https://blog.github.com
