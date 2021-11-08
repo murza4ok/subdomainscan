@@ -39,9 +39,15 @@ for subdomain in subdomains:
         # запомним незарезолв
         print("[+] Поддомен не обнаружен:", url)
         undiscovered_subdomains.append(url)
-        pass
+
     except requests.ConnectionError:
-        pass
+        print("[+] Поддомен не обнаружен:", url)
+        undiscovered_subdomains.append(url)
+
+    except requests.URLRequired:
+        print("[+] Поддомен не обнаружен:", url)
+        undiscovered_subdomains.append(url)
+
     else:
         print("[+] Обнаружен поддомен:", url)
         # добавляем обнаруженный поддомен в наш список
