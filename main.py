@@ -14,8 +14,8 @@ socket.socket = socks.socksocket
 print(requests.get("http://httpbin.org/ip").text,"вывод рабочего айпи")
 """
 
-# домен для поиска поддоменов
-domain = "github.com"
+# домен для поиска поддоменов "github.com"
+domain = input()
 # читать все поддомены
 file = open("subdomains-100.txt")
 # прочитать весь контент
@@ -34,27 +34,37 @@ for subdomain in subdomains:
         # если возникает ОШИБКА, значит, субдомен не существует
        requests.get(url,timeout=0.1)
 
+# слипы для того, чтобы не выключало нас, мб при торе не понадобится
     except requests.Timeout:
         # запомним незарезолв
         print("[+] Поддомен не обнаружен:", url)
         undiscovered_subdomains.append(url)
         pass
-
+    except requests.ConnectionError:
+        pass
     else:
         print("[+] Обнаружен поддомен:", url)
         # добавляем обнаруженный поддомен в наш список
         discovered_subdomains.append(url)
 
     # сохраняем обнаруженные поддомены в файл
-    with open("discovered_subdomains.txt", "w") as f:
+    """
+    #with open("discovered_subdomains.txt", "w") as f:
         for subdomain in discovered_subdomains:
             print(subdomain, file=f)
     with open("undiscovered_subdomains.txt", "w") as f:
         for subdomain in undiscovered_subdomains:
             print(subdomain, file=f)
+    """
     with open("discovered_subdomains.csv", "w") as file:
         file_writer = csv.writer(file, 'my_dialect')
         i = 0
         for subdomain in discovered_subdomains:
+            i = i+1
+            file_writer.writerow([i, subdomain])
+    with open("undiscovered_subdomains.csv", "w") as file:
+        file_writer = csv.writer(file, 'my_dialect')
+        i = 0
+        for subdomain in undiscovered_subdomains:
             i = i+1
             file_writer.writerow([i, subdomain])
