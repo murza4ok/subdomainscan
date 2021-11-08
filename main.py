@@ -15,7 +15,7 @@ print(requests.get("http://httpbin.org/ip").text,"вывод рабочего а
 """
 
 # домен для поиска поддоменов "github.com"
-domain = input()
+domain = "github.com"
 # читать все поддомены
 file = open("subdomains-100.txt")
 # прочитать весь контент
@@ -32,7 +32,7 @@ for subdomain in subdomains:
     url = f"https://{subdomain}.{domain}"
     try:
         # если возникает ОШИБКА, значит, субдомен не существует
-       requests.get(url,timeout=0.1)
+       r = requests.get(url,timeout=0.1)
 
 # слипы для того, чтобы не выключало нас, мб при торе не понадобится
     except requests.Timeout:
@@ -49,9 +49,13 @@ for subdomain in subdomains:
         undiscovered_subdomains.append(url)
 
     else:
-        print("[+] Обнаружен поддомен:", url)
-        # добавляем обнаруженный поддомен в наш список
-        discovered_subdomains.append(url)
+        if r.status_code == 404:
+            print("[+] Поддомен не обнаружен:", url)
+            undiscovered_subdomains.append(url)
+        else:
+            print("[+] Обнаружен поддомен:", url)
+            # добавляем обнаруженный поддомен в наш список
+            discovered_subdomains.append(url)
 
     # сохраняем обнаруженные поддомены в файл
     """
