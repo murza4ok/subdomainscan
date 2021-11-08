@@ -1,0 +1,41 @@
+import requests
+import time
+
+# домен для поиска поддоменов
+domain = "github.com"
+# читать все поддомены
+file = open("subdomains-100.txt")
+# прочитать весь контент
+content = file.read()
+# разделить на новые строки
+subdomains = content.splitlines()
+# список обнаруженных поддоменов
+discovered_subdomains = []
+undiscovered_subdomains = []
+for subdomain in subdomains:
+    # создать URL
+    url = f"http://{subdomain}.{domain}"
+    try:
+        # если возникает ОШИБКА, значит, субдомен не существует
+        requests.get(url)
+        start_time = time.time()
+        Close = 3
+    except requests.ConnectionError:
+        # если поддомена не существует, просто передать, ничего не выводить
+        while True:
+            pass
+            if time.time() > start_time + Close:
+                print("[+] neОбнаружен поддомен:", url)
+                undiscovered_subdomains.append(url)
+
+    else:
+        print("[+] Обнаружен поддомен:", url)
+        # добавляем обнаруженный поддомен в наш список
+        discovered_subdomains.append(url)
+    # сохраняем обнаруженные поддомены в файл
+    with open("discovered_subdomains.txt", "w") as f:
+        for subdomain in discovered_subdomains:
+            print(subdomain, file=f)
+    with open("undiscovered_subdomains.txt", "w") as f:
+        for subdomain in undiscovered_subdomains:
+            print(subdomain, fi
