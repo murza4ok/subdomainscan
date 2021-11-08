@@ -6,13 +6,13 @@ import csv
 
 # вывод оригинального айпи
 print(requests.get("http://httpbin.org/ip").text, "вывод оригинального айпи")
-"""
+
 #  проверка изменения нашего айпи
 socks.set_default_proxy(socks.SOCKS5, "127.0.0.1", 9150)
 socket.socket = socks.socksocket
 # вывод рабочего айпи
 print(requests.get("http://httpbin.org/ip").text,"вывод рабочего айпи")
-"""
+
 
 # домен для поиска поддоменов "github.com"
 domain = "github.com"
@@ -24,6 +24,7 @@ content = file.read()
 subdomains = content.splitlines()
 # список обнаруженных поддоменов
 discovered_subdomains = []
+ip_discovered_subdomains = []
 undiscovered_subdomains = []
 csv.register_dialect('my_dialect', delimiter=',', lineterminator="\r")
 
@@ -32,7 +33,7 @@ for subdomain in subdomains:
     url = f"https://{subdomain}.{domain}"
     try:
         # если возникает ОШИБКА, значит, субдомен не существует
-       r = requests.get(url,timeout=0.1)
+       r = requests.get(url,timeout=5)
 
 # слипы для того, чтобы не выключало нас, мб при торе не понадобится
     except requests.Timeout:
@@ -49,11 +50,17 @@ for subdomain in subdomains:
         undiscovered_subdomains.append(url)
 
     else:
-        if r.status_code == 404:
+        if r.status_code  >= 400:
             print("[+] Поддомен не обнаружен:", url)
             undiscovered_subdomains.append(url)
         else:
             print("[+] Обнаружен поддомен:", url)
+            try:
+                print(socket.gethostbyname(url))
+            except socket.gaierror:
+                pass
+            else:
+                ip_discovered_subdomains.append(socket.gethostbyname(url))
             # добавляем обнаруженный поддомен в наш список
             discovered_subdomains.append(url)
 
